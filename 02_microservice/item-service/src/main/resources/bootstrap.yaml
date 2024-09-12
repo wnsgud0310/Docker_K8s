@@ -1,0 +1,17 @@
+server:
+  port: 0 # 사용 가능한 port 를 random 하게 설정.
+#port: 5000
+spring:
+  application:
+    name: item-service
+  profiles:
+    active: local
+    #active: docker
+  cloud:
+    config:
+      # 도커 버전
+      #uri: http://172.21.0.3:8080
+      uri: http://localhost:8080
+    loadbalancer:
+      ribbon:
+        enabled: false

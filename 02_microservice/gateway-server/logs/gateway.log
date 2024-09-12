@@ -1,0 +1,63 @@
+2024-09-09T12:24:23.522+09:00  INFO 9100 --- [main] o.m.g.GatewayServerApplication           : The following 1 profile is active: "local"
+2024-09-09T12:24:24.127+09:00  INFO 9100 --- [main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=1fdd9970-051c-3b64-89bf-06d4dcb480f9
+2024-09-09T12:24:24.157+09:00  INFO 9100 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2024-09-09T12:24:24.157+09:00  INFO 9100 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2024-09-09T12:24:24.158+09:00  INFO 9100 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'reactorDeferringLoadBalancerExchangeFilterFunction' of type [org.springframework.cloud.client.loadbalancer.reactive.DeferringLoadBalancerExchangeFilterFunction] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2024-09-09T12:24:24.710+09:00  INFO 9100 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [After]
+2024-09-09T12:24:24.710+09:00  INFO 9100 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Before]
+2024-09-09T12:24:24.710+09:00  INFO 9100 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Between]
+2024-09-09T12:24:24.710+09:00  INFO 9100 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Cookie]
+2024-09-09T12:24:24.710+09:00  INFO 9100 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Header]
+2024-09-09T12:24:24.710+09:00  INFO 9100 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Host]
+2024-09-09T12:24:24.711+09:00  INFO 9100 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Method]
+2024-09-09T12:24:24.711+09:00  INFO 9100 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Path]
+2024-09-09T12:24:24.711+09:00  INFO 9100 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Query]
+2024-09-09T12:24:24.711+09:00  INFO 9100 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [ReadBody]
+2024-09-09T12:24:24.711+09:00  INFO 9100 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [RemoteAddr]
+2024-09-09T12:24:24.711+09:00  INFO 9100 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [XForwardedRemoteAddr]
+2024-09-09T12:24:24.711+09:00  INFO 9100 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Weight]
+2024-09-09T12:24:24.712+09:00  INFO 9100 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [CloudFoundryRouteService]
+2024-09-09T12:24:25.024+09:00  INFO 9100 --- [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 3 endpoint(s) beneath base path '/actuator'
+2024-09-09T12:24:25.168+09:00  INFO 9100 --- [main] DiscoveryClientOptionalArgsConfiguration : Eureka HTTP Client uses RestTemplate.
+2024-09-09T12:24:25.186+09:00  WARN 9100 --- [main] iguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+2024-09-09T12:24:25.230+09:00  INFO 9100 --- [main] o.s.c.n.eureka.InstanceInfoFactory       : Setting initial instance status as: STARTING
+2024-09-09T12:24:25.255+09:00  INFO 9100 --- [main] com.netflix.discovery.DiscoveryClient    : Initializing Eureka in region us-east-1
+2024-09-09T12:24:25.259+09:00  INFO 9100 --- [main] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2024-09-09T12:24:25.273+09:00  INFO 9100 --- [main] com.netflix.discovery.DiscoveryClient    : Disable delta property : false
+2024-09-09T12:24:25.273+09:00  INFO 9100 --- [main] com.netflix.discovery.DiscoveryClient    : Single vip registry refresh property : null
+2024-09-09T12:24:25.273+09:00  INFO 9100 --- [main] com.netflix.discovery.DiscoveryClient    : Force full registry fetch : false
+2024-09-09T12:24:25.273+09:00  INFO 9100 --- [main] com.netflix.discovery.DiscoveryClient    : Application is null : false
+2024-09-09T12:24:25.273+09:00  INFO 9100 --- [main] com.netflix.discovery.DiscoveryClient    : Registered Applications size is zero : true
+2024-09-09T12:24:25.274+09:00  INFO 9100 --- [main] com.netflix.discovery.DiscoveryClient    : Application version is -1: true
+2024-09-09T12:24:25.274+09:00  INFO 9100 --- [main] com.netflix.discovery.DiscoveryClient    : Getting all instance registry info from the eureka server
+2024-09-09T12:24:25.579+09:00  INFO 9100 --- [main] com.netflix.discovery.DiscoveryClient    : The response status is 200
+2024-09-09T12:24:25.581+09:00  INFO 9100 --- [main] com.netflix.discovery.DiscoveryClient    : Starting heartbeat executor: renew interval is: 30
+2024-09-09T12:24:25.583+09:00  INFO 9100 --- [main] c.n.discovery.InstanceInfoReplicator     : InstanceInfoReplicator onDemand update allowed rate per min is 4
+2024-09-09T12:24:25.587+09:00  INFO 9100 --- [main] com.netflix.discovery.DiscoveryClient    : Discovery Client initialized at timestamp 1725852265586 with initial instances count: 0
+2024-09-09T12:24:25.588+09:00  INFO 9100 --- [main] o.s.c.n.e.s.EurekaServiceRegistry        : Registering application GATEWAY-SERVER with eureka with status UP
+2024-09-09T12:24:25.588+09:00  INFO 9100 --- [main] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1725852265588, current=UP, previous=STARTING]
+2024-09-09T12:24:25.589+09:00  INFO 9100 --- [DiscoveryClient-InstanceInfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_GATEWAY-SERVER/DESKTOP-VEAI621.mshome.net:gateway-server:8070: registering service...
+2024-09-09T12:24:25.649+09:00  INFO 9100 --- [DiscoveryClient-InstanceInfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_GATEWAY-SERVER/DESKTOP-VEAI621.mshome.net:gateway-server:8070 - registration status: 204
+2024-09-09T12:24:25.725+09:00  INFO 9100 --- [main] o.s.b.web.embedded.netty.NettyWebServer  : Netty started on port 8070
+2024-09-09T12:24:25.726+09:00  INFO 9100 --- [main] .s.c.n.e.s.EurekaAutoServiceRegistration : Updating port to 8070
+2024-09-09T12:24:25.857+09:00  INFO 9100 --- [main] o.m.g.GatewayServerApplication           : Started GatewayServerApplication in 3.33 seconds (process running for 3.764)
+2024-09-09T12:24:55.591+09:00  INFO 9100 --- [DiscoveryClient-CacheRefreshExecutor-0] com.netflix.discovery.DiscoveryClient    : Disable delta property : false
+2024-09-09T12:24:55.592+09:00  INFO 9100 --- [DiscoveryClient-CacheRefreshExecutor-0] com.netflix.discovery.DiscoveryClient    : Single vip registry refresh property : null
+2024-09-09T12:24:55.592+09:00  INFO 9100 --- [DiscoveryClient-CacheRefreshExecutor-0] com.netflix.discovery.DiscoveryClient    : Force full registry fetch : false
+2024-09-09T12:24:55.592+09:00  INFO 9100 --- [DiscoveryClient-CacheRefreshExecutor-0] com.netflix.discovery.DiscoveryClient    : Application is null : false
+2024-09-09T12:24:55.593+09:00  INFO 9100 --- [DiscoveryClient-CacheRefreshExecutor-0] com.netflix.discovery.DiscoveryClient    : Registered Applications size is zero : true
+2024-09-09T12:24:55.593+09:00  INFO 9100 --- [DiscoveryClient-CacheRefreshExecutor-0] com.netflix.discovery.DiscoveryClient    : Application version is -1: false
+2024-09-09T12:24:55.593+09:00  INFO 9100 --- [DiscoveryClient-CacheRefreshExecutor-0] com.netflix.discovery.DiscoveryClient    : Getting all instance registry info from the eureka server
+2024-09-09T12:24:55.615+09:00  INFO 9100 --- [DiscoveryClient-CacheRefreshExecutor-0] com.netflix.discovery.DiscoveryClient    : The response status is 200
+2024-09-09T12:29:25.290+09:00  INFO 9100 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2024-09-09T12:34:25.303+09:00  INFO 9100 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2024-09-09T12:39:25.309+09:00  INFO 9100 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2024-09-09T12:44:25.312+09:00  INFO 9100 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2024-09-09T12:49:25.315+09:00  INFO 9100 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2024-09-09T12:54:25.329+09:00  INFO 9100 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2024-09-09T12:59:25.333+09:00  INFO 9100 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2024-09-09T13:04:25.347+09:00  INFO 9100 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2024-09-09T13:09:25.351+09:00  INFO 9100 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2024-09-09T13:19:52.729+09:00  INFO 9100 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2024-09-09T13:24:52.739+09:00  INFO 9100 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2024-09-09T13:29:52.741+09:00  INFO 9100 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
