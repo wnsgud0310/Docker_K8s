@@ -1,0 +1,20 @@
+1. 앞으로의 공부할 순서
+    - docker  & k8s
+     . linux 수업에서 어렵다고 느끼면, 좀 더 어려울 수 있음.
+     . 새로운 개념, image, container, 가상화 
+        + java(spring boot) + JPA + H2 => docker 기반으로
+        위의 요소를 합쳐서 image, container =>
+        간단한 spring cloud 기반의 웹 애플리케이션 ( api server ) 
+      . k8s 교재
+        kind 경량 컨테이너 오케스트레이션 
+        - 가상화, linux 설치, K8S ( X ) 
+        - kind 를 사용할 예정 ( 교재에 사용 방법 나와있음 )
+        - 클라우드 네이티브 애플리케이션 구현 
+          application( spring boot, jpa, h2 ) + infra ( 컨테이너 실행 환경 => 설계 )
+          인프라 설계 ( 컨테이너의 설계 => 서비스 분할 => MSA ) 까지는 시간이 부족함.
+
+    - aws lambda
+    줄여서 docker & k8s, spring cloud 에 시간을 좀 더 투입할 예정.
+    - spring cloud native application
+     docker, K8S ( mini cube : 경량 컨테이너 오케스트레이션 )
+    - 최종 프로젝트
