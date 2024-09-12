@@ -1,0 +1,54 @@
+###### 5.1 Recreate 업데이트 전략 실습
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-deployment1
+spec:
+  replicas: 3
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+        - name: my-container
+          image: nginx:latest
+# apiVersion 확인
+#kubectl explain deployment
+
+# Deployment 의 spec 확인
+#kubectl explain deployment.spec
+# RetricaSet => replicas, selector, template
+# strategy => 업데이트 전략
+
+# strategy 의 옵션 확인
+# kubectl explain deployment.spec.strategy
+
+# K8S 에 Deployment 를 적용(apply)
+# kubectl apply -f ex4-1-recreate.yaml
+
+######## 실습 방법 ########
+# 터미널(power shell)을 두 개 준비.
+# 하나의 터미널에서 kubectl apply -f ex4-1-recreate.yaml 실행
+# 다른 하나의 터니널에서는 kubectl get pod
+# => 3개의 컨테이너가 생성이 되고, Running 인 상태를 확인.
+
+# 그리고, nginx:1.17 에서 nginx:2.0 으로 변경해서 kubectl apply 실행.
+# => 3개의 컨테이너가 같이 Terminating 되고, 같이 ContainerCreating 되고,
+#    Running 상태로 변경이 되면서 진행이 되는 부분을 확인.
+
+# kubectl describe pod 3개중의 하나를 선택. 실행해서
+# => nginx:1.17 에서 nginx:2.0 로 변경이 되었는지 확인.
+
+# 혹시나, 좀비 pod 생성이 되어서 삭제해야 하는 경우.
+# => pod 를 강제로 삭제해야 함.
+# kubectl delete pod 삭제할 pod 식별자 --grace-period=0 --force
+# --grace-period : pod 가 종료할 때 까지의 대기시간
+#                  0 으로 설정하면 대기하지 않음.
+# --force : 강제로 삭제를 한다는 의미.

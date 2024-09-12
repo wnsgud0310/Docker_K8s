@@ -1,0 +1,29 @@
+# 1. yaml 에 정의된 pod spec 으로 K8S 에 적용
+# 2. 생성된 pod 를 조회 및 상세 조회
+# 3. 생성된 pod 삭제
+# 4. pod 조회의 다양한 방법(명령어)
+
+# apiVersion 은 정의하려는 객체마다 조금씩 다름.
+apiVersion: v1 # Pod 의 경우는 v1 임.
+kind: Pod
+metadata:
+  name: my-simple-pod # 정의하려고 하는 Pod 객체에 대한 식별자 ID 의 역할.
+spec: # 객체에 대한 상세 설정
+  containers: # 여러개로 설정이 가능. 지금은 간단하게 하나만 설정한 상태.
+    - name: my-container
+      image: nginx:1.24 # docker hub 에서 다운로드 받아서 사용하게 됨.
+# 1. yaml 에 정의된 pod spec 으로 K8S 에 적용
+#    kubectl apply -f ex1-1.yaml
+#    apply : 이 spec(yaml)을 K8S 에 적용하라는 의미.
+#   -f : 이 spec을 file 로 부터 참조하라는 의미
+# 2. 생성된 pod 를 조회 및 상세 조회
+#    kubectl get pod
+#    kubectl describe pod my-simple-pod
+# 3. 생성된 pod 삭제
+#    kubectl delete pod my-simple-pod
+# 4. pod 조회의 다양한 방법(명령어)
+#    kubectl get pods
+#    kubectl get pod
+#    kubectl get po
+
+

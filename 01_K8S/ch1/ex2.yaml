@@ -1,0 +1,23 @@
+# 1. 다중 컨테이터로 선언된 pod
+# 2. initContainers spec 을 적용
+#    multi containser psec 을 적용
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-multi-container-pod
+spec:
+  initContainers:
+    - name: my-initializer
+      image: busybox
+      command: ["sh", "-c", "exit -1"]
+  containers:
+    - name: nginx
+      image: nginx:1.24
+    - name: redis
+      image: redis
+# kubectl explain pod.spec
+# kubectl apply -f ex2.yaml
+# kubectl get pod
+# kubectl describe pod my-multi-container-pod
+# kubectl delete pod my-multi-container-pod

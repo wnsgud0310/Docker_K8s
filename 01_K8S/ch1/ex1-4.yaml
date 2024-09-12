@@ -1,0 +1,18 @@
+#8. 재시작 정책 테스트 - 비정상 종료인 경우
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-simple-pod
+spec:
+  restartPolicy: OnFailure
+  containers:
+    - name: my-container
+      #image: nginx:1.24
+      image: busybox
+      # 항상 실패(비정상 종료, exit code 가 0이 아님.)하는 상황을 만듬.
+      command: ["sh", "-c", "exit -1"]
+# kubectl delete pod my-simple-pod
+# kubectl apply -f ex1-4.yaml
+# kubectl get pod
+# kubectl describe pod my-simple-pod
+# kubectl delete pod my-simple-pod

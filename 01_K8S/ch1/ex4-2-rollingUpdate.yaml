@@ -1,0 +1,33 @@
+###### 5.2 RollingUpdate 업데이트 전략 실습
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-deployment2
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      # maxSurge 옵션은
+      # 자원을 좀 더 사용면서, pod 를 더 많이 실행해서
+      # 업데이트 구간에서 좀 더 원활하게 업데이트가 되도록
+      # 하는 옵션이라고 생각하면 쉬움.
+      maxSurge: 1
+      # maxUnavailable 옵션은
+      # 자원이 부족한 상태에서 노드를 빡빡하게 사용하고 있는 상황에서도
+      # 업데이트에 지장이 없도록 어느 정도는 기존의 pod 들을
+      # 종료시키면서 공간을 확보할 수 있는 pod 수를 지정한다고 생각하면
+      # 쉬움.
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+        - name: my-container
+          image: nginx:1.17

@@ -1,0 +1,72 @@
+# 레플리카셋 테스트
+
+# ReplicaSet
+#   - Pod 의 복제본을 생성하고 관리할 수 있는 객체.
+#   - Pod 의 수량을 관리해주는 기능임.
+#     어떤 pod 를 몇 개나 생성해줄 것인가를 정하는 것이 전부.
+#   - Pod 의 수량을 관리 => 설정된 수량을 유지하려고 함.
+#
+
+# kubectl explain ReplicaSet
+# kubectl explain ReplicaSet.spec
+# kubectl apply -f ex3.yaml
+# kubectl get ReplicaSet
+# kubectl describe ReplicaSet nginx-replicaset
+
+# kubectl delete pos nginx-replicaset-cpmm2
+# kubectl get ReplicaSet
+
+# replicas 3 -> 5 로 관리 수량 변경.
+# kubectl apply -f ex3.yaml
+# kubectl get ReplicaSet
+
+# replicas 5 -> 3 로 관리 수량 변경.
+# kubectl apply -f ex3.yaml
+# kubectl get ReplicaSet
+
+# image: nginx:1.24 -> nginx:1.19 로 변경.
+# kubectl apply -f ex3.yaml
+# kubectl describe ReplicaSet nginx-replicaset
+# kubectl describe pod nginx-replicaset-kh8cz
+# kubectl delete pod nginx-replicaset-kh8cz
+# kubectl describe pod nginx-replicaset-jwg5g
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: nginx-replicaset
+spec:
+  # 몇 개의 pod 를 실행할 것인지의 pod 수량을 정의.
+  replicas: 3
+  # pod 의 label 에 대한 selector
+  selector:
+    matchLabels:
+      app: nginx
+  # ReplicaSet 에 의해서 만들어지는 객체의 spec 을 정의함.
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.19
+# 1. apps/v1 확인하는 방법
+#    kubectl explain 을 활용해서 version 확인하는 방법
+# 2. 관리할 pod 를 3 개 설정
+#    하나의 pod 를 선택해서 삭제 후
+#    3개의 pod 로 유지되는지 확인하는 실습
+
+#  pod 를 3개로 설정 => 탄력적으로 서비스를 운영
+#  => 업그레이드 수행이 필용( 유지보수 )
+#  => 유지보수 전략은 어떻게 할 것인지?
+
+#  Deployment 가 ReplicaSet 을 관리( 유지보수 전략 )
+
+# 3. kubectl 을 이용해서 관리할 pod 를 변경 및 적용
+# 4. 관리할 pod 를 3 개 -> 5개로 설정 후 동작 확인
+# 5. 관리할 pod 를 5 개 -> 3개로 설정 후 동작 확인
+# 6. nginx 버전을 1.24 -> 1.19 로 변경 후 spec 을 적용
+#    실제 pod 의 nginx 버전을 확인
+#    => spec만 변경이 되었지만, 실행중인 container 에는
+#       반영이 안됨.
+#    => 반영이 되도록 하는 실습.
