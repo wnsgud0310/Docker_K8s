@@ -1,0 +1,498 @@
+0. 흐름
+
+   java 웹 app 개발 
+   -> image 로 빌드 ( docker 에서 사용할 수 있는 image => container 용도 ) 
+   -> 실행
+      - docker 를 이용해서 실행
+      - k8s 에서 사용할 수 있도록 image 를 배포
+        docker hub( public image registry, image 저장소 )
+   -> docker, K8S, EKS 에서 pull 해서 사용할 수 있음.
+
+1. docker 설치
+   - WSL2(Windows Subsystem For Linux) 활성화
+     docker 는 Linux 에서만 호환이 됨.
+     윈도우에서 linux 처럼 사용하기 위함.
+
+     제어판 > 프로그램 및 기능 > Windows 기능 켜기/끄기
+
+     Linux 용 Windows 하위 시스템, 가상 머신 플랫폼 를 체크
+     윈도우 재부팅
+
+   - docker 설치
+     Docker Desktop 다운 및 설치
+
+     https://docs.docker.com/desktop/install/windows-install/
+
+     docker hub 가입
+     
+     Docker Desktop 설치
+
+     docker version 입력 후 실행.
+     => docker client, server 를 확인.
+     
+     docker run hello-world
+
+   - 리눅스 커널 업데이트
+     wsl_update_x64.msi
+
+   - 설치 및 실행 확인
+     docker version 입력 후 실행.
+
+2. 컨테이너 기술의 장점
+   - 하이퍼바이저와 Guest OS 가 없기 때문에 가볍다.
+   - 경량이기 때문에 만들어진 이미지 복제, 이관, 배포가 쉽다.
+   - Guest OS를 부팅하지 않기 때문에 애플리케이션 시작 시간이 빠르다.
+   - 가상머신(Virtual Box, Vmware 등)보다 경량이므로 더 많은 
+     애플리케이션을 실행할 수 있음.
+
+3. Docker clinet, server, registry
+   - client 는 도커 명령을 받고, 결과를 출력하는 역할을 함.
+     도커에 명령을 내릴 수 있는 CLI(command line interface) 도구를 의미함.
+     도커 클라이언트를 이용해서 컨테이너, 이미지 등을 관리를 요청할 수 있음.
+   - server 는 도커 엔진, 즉 도커 데몬을 이용해 컨테이너 시작, 운영, 정지 등을 담당.
+   - 도커 registry 는 도커 이미지를 저장하거나 배포하는 시스템.
+     docker hub는 가장 유명한 public 레지스트리임.
+
+4. Docker image, container
+   - 도커 image 란 컨테이너 형태로 소프트웨어를 배포하기 위해 필요한 모든 요소
+     (코드, 라이브러리, 설정 등)를 실행할 수 있는 포맷으로 컴파일 및 빌드한 패키지임.
+   - 도커 container 는 docker image 를 실행 할 수 있는 인스턴스를 의미함.
+     도커 container 는 도커 image 로 부터 생성되며, 도커 container 에 대해 실행, 중지,
+     삭제 등의 명을을 내릴 수 있ㅇ름.
+
+     컨테이너는 도커 엔진과 운영체제를 공유함. 즉, 컨테이너는 도커 엔진이 설치되어 있는
+     호스트 운영체제를 이용한다는 뜻임.
+
+5. K8S, K8S 의 장점.
+   - ERP( 생산 : 컨테이너 하나, 물류 : 컨테이너 하나, 회계 : 컨테이너 하나, 인사 :컨테이너 하나 등 )
+
+   - ERP의 실행 할 수 있는 단위가 무한정으로 늘어날 수 있음. 
+     그래서, 하나의 모듈당 20개의 실행단위인 컨테이너로 운영을 한다면, 총 80개의 컨테이너를
+     운용하게 됨. 향후에는 회사가 성장함에 따라 컨테이너 수가 더욱 늘어날 수 있음.
+
+   - 수많은 컨테이너의 관리를 편리하게 하기 위해 오케스트레이션 도구가 필요해짐.
+     그래서, 표준이 된 것이 k8s 임.
+
+   - 쿠버네티스는 대규모 클러스터 환경의 수 많은 컨테이너를 쉽고 빠르게 확장, 배포, 
+     관리하는 작업을 자동화해주는 플랫폼.
+
+   - AWS EKS, Azure AKS, Google GKE
+
+   - K8S 의 장점
+     a. 온프레미스 환경에서 수행하는 서버 업그레이드, 패치, 백업 등의 작업을 
+     자동화(오토 스케일링, 로드 밸런싱 등)하여 인프라 관리보다는 서비스 관리에 
+     집중할 수 있음.
+
+     b. 컨테이너 장애 발생시 자기 회복 기능을 통해 복제 컨테이너를 생성하여
+     서비스를 지속할 수 있음. => 무중단 서비스, 무중단 배포(업그레이드)
+     => 레플리카셋 => 24/7/365 서비스
+    
+     c. 컨테이너화를 통해 소프트웨어를 패키지화하면 점진적 업데이트를 통해
+     다운타임없이 쉽고 빠르게 릴리즈 및 업데이트할 수 있다.
+     => 무중단 배포(업그레이드) => k8s의 레플리카셋이용.
+
+6. docker container 서비스 = docker network + h2 db container
+   docker pull busybox // docker hub 이미지 가져오기
+   docker images       // 로컬의 이미지 목록 조회
+   docker run busybox  // 이미지를 컨테이너로 실행
+   docker ps           // ps(process status). 실행중인것만 표시
+   docker ps -a        // 실행중, 실행종료 모두 표시
+   docker run -it busybox sh
+      run : 이미지를 컨테이너로 실행
+      -it : i => stdin open
+            t => terminal 할당
+            it => 명령어 입력을 터미널로 요청( 입력한 명령어를 실행 )
+      busybox : 이미지
+      sh : sh(셸) 를 이용
+
+      busybox 라는 이미지를 컨테이로 실행해서 sh 를 이용해서 명령어를 실행.
+
+   exit
+   docker run busybox echo 'Hello World'
+      a. docker client 에서 명령어 입력, 실행 요청
+      b. docker server 명령어를 받음.
+         dockerd(daemon) 이 명령어를 받음.
+         Unix socket 을 통해서 컨테이너에게 명령어를 전달.
+           - 도커 데몬과 통신하는데 사용.
+           - Docker cli 에서 docker 명령어를 실행하는데 사용
+         컨테이너에서 echo 'Hello World' 실행
+      c. 실행된 결과가 docker client 로 전달.
+
+   docker rmi 이미지ID
+   docker rmi -f 이미지ID
+
+   docker network create msa-network
+      실행해야 할 이미지가 10개 가 있는 경우, 하나의 네트워크에 담아서 사용하고 싶음.
+   docker network ls
+   docker network inspect msa-network
+      할당된 네트워크 정보 확인
+
+   docker run --network msa-network -d -p 1521:1521 -p 8081:81 -e H2_OPTIONS="-ifNotExists" --name=h2 oscarfonts/h2
+      --network msa-network  실행할 컨테이너에 네트워크를 할당.
+      -d  데몬으로 실행
+      -p 1521:1521 할당된 네트워크 의 port no
+      -p 8081:81   host os 에서 h2에 접속할 때 사용할 port no
+      -e 컨테이너를 생성할 때 전달할 환경변수.
+         환경변수가 여러개라면 -e 옵션을 여러번 사용
+      H2_OPTIONS="-ifNotExists"  h2 데이터베이스 생성을 위한 옵션
+      --name=h2 생성할 컨테이너의 이름
+      oscarfonts/h2 생성할 컨테이너로 사용될 이미지
+
+    docker images  h2 image 가 pull 되었는지 확인
+
+    docker exec -it h2 /bin/bash
+
+    cd /opt/h2/bin
+    ls -al
+    java -cp h2-2.1.214.jar org.h2.tools.Shell
+
+    아래의 두 ddl 을 브라우저에서 실행 후, 접속한 컨테이너 터미널에서  조회.
+    CREATE TABLE TEST(ID INT PRIMARY KEY, NAME VARCHAR(255));
+    CREATE TABLE TEST100(ID INT PRIMARY KEY, NAME VARCHAR(255));
+
+    터미널에서 show tables 로 실행해서
+    브라우저에서 생성한 테이블이 조회가 되는 지 확인.
+
+    docker images
+    docker container ls
+
+7. 6 번에서 수행한 작업을 깨끗하게 clear 하려고 하는 경우.
+   - docker network 생성
+   - h2 image pull
+   - h2 image container
+
+   - 삭제 순서
+     container -> network -> image
+
+     docker images 로 삭제할 이미지 의 IMAGE ID 조회
+     docker rmi -f IMAGE ID => 강제 삭제가 안되는 경우. 컨테이너부터 종료시켜야 함.
+
+     docker stop CONTAINER_ID => container 종료 성공
+
+     docker rmi -f IMAGE ID => 이미지 삭제 성공
+
+     docker images
+
+     docker network rm msa-network
+
+     docker network ls
+
+8. docker container 서비스 = h2 db container ( docker network 사용하지 않음 )
+
+   [ 6 번에서 사용되었던 명령어 ]
+   docker run --network msa-network -d -p 1521:1521 -p 8081:81 -e H2_OPTIONS="-ifNotExists" --name=h2 oscarfonts/h2
+
+   여기서 부터 8번 실습 내용 시작.
+   docker run -d -p 8081:81 -e H2_OPTIONS="-ifNotExists" --name=h2 oscarfonts/h2
+         => --name=h2 원인임. h2 는 다른 컨테이너의 이름.
+
+   docker run -d -p 8081:81 -e H2_OPTIONS="-ifNotExists" --name=h2-1 oscarfonts/h2
+         => 8081:81 원인임. 8081 port no 는 다른곳에서 사용중임.
+
+   docker run -d -p 8082:81 -e H2_OPTIONS="-ifNotExists" --name=h2-2 oscarfonts/h2
+
+
+   ******************** MSA 할 때 중요한 고려 사항이 됨. ********************
+   MSA 구성요소는 결구 java 로 빌드된 여러개의 jar 이고, 
+   이 여러개의 jar 가 각각의 docker image 로 만들어지게 되고,
+   그리고, 이 docker image 를 각각의 컨테이너로 실행을 해야함으로
+   위에서 컨테이너명 중복, 포트 번호 중복에 대한 이해가 반드시 필요함.
+
+
+
+   docker exec -it h2-2 /bin/bash
+
+   cd /opt/h2/bin
+   ls -al
+   java -cp h2-2.1.214.jar org.h2.tools.Shell
+
+9. 웹 서비스 실행을 위한 Nginx 컨테이너 실행
+   docker pull nginx:1.25
+
+   docker run --name webserver1 -d -p 8001:80 nginx:1.25
+   -d : 컨테이너를 백그라운드에서 실행
+   -p : 컨테이너의 80 번 포트를 Host OS 포트 8001 포트를 오픈해서 포트포워딩.
+
+   docker ps
+   실행되고 있는 컨테이너의 상태를 확인.
+
+   docker stats webserver1
+   컨테이너의 리소스 사용량을 실시간으로 확인. 
+
+   docker logs -f webserver1
+   접근 로그를 실시간을 확인
+   접속한 웹 브라우저에서 새로고침을 하면 접근 로그가 실시간으로 확인됨.
+
+   docker stop webserver1
+   컨테이너 종료. 웹서버 서비스 종료.
+
+   docker ps
+   컨테이너 종료 확인.
+
+10. 코드로 개발하는 컨테이너 인프라 => Dockefile => Iac(Infrasture as Code)
+   - 원하는 개발 환경을 코드로 구성하는 방법을 제공하는 것이 Dokerfile
+   - 필요성
+     a. 커맨드 기반(cli)의 인프라 구성 시 사용자의 실수 등의 휴먼 오류 가능성이 높아서.
+     b. 설치 순서와 상호 연관성 등을 고려하여 각종 라이브러리와 함께 복잡한 명령어를 작성.
+     c. 설치 이후에 잘못된 설정이 있다면 수정해야 하고, 때로는 유지보수(재설치등)도 불가피
+     d. 인프라의 공유(배포)가 편리해짐.
+   - 장점
+     a. 프로그래밍형 인프라 개발은 탄력성, 확장성, 반복성을 부여할 수 있음.
+     b. 민접성, 비요효율적인 구성, 위험 감소 와 같은 장점도 있음.
+     c. 인프라의 가독성이 높아짐.
+     d. 개발업무에 집중이 가능. 수정사항을 코드베이스로 변경이 용이하기 때문.
+   - Dockerfile 작성 -> build -> docker image 생성 -> run -> docker container -> 서비스 시작
+   - Dockerfil 명령어.
+
+11. Dockerfile 작성 및 build - 1
+   - IaC 폴더에 Dockerfile 작성.
+   - Dockerfile 있는 곳으로 이동.
+   - build => image 생성
+     build 실행
+     docker build -t mynginxapp:1.0 .
+
+     build 결과물인 image가 생성이 되었는지 확인.
+     docker images
+
+     컨테이너로 실행
+     docker run -d -p 8082:80 --name=mynginxapp mynginxapp:1.0
+
+     컨테이너 조회
+     docker container ls
+
+     브라우저로 nginx 서버에 접속
+     http://localhost:8082/
+
+   - Linux 의 foreground, background
+     daemon off; => foreground process
+
+     daemon on; => background process
+
+     리눅스에서 foreground 와 background 프로세스는
+     터미널과의 연결여부에 따라 구분됨.
+
+     터미널에 연결된 프로세스는 foreground 프로세스라고 하고,
+     터미널에 연결되지 않은 프로세스는 background 프로세스라고 함.
+
+     background 프로세스로 실행을 하면 키보드 입력을 내릴 수 없음.
+     foreground 프로세스로 실행을 하면 키보드 입력을 내릴 수 있음.
+
+   - Linux 의 foreground, background 테스트 실습
+     Dockerfile 의 daemon off; 를 daemon on; 으로 변경 후 build 를 진행.
+     docker build -t mynginxapp:2.0 .
+
+     docker run -d -p 8083:80 --name=mynginxapp2 mynginxapp:2.0
+
+     nginx 컨테이너 두 개가 실행되는 상태임.
+     하나는 foreground, 또 다른 하나는 background 프로세스로 실행된 상태임.
+
+     docker exec -it mynginxapp bash => 터미널로 접속이 됨.
+     docker exec -it mynginxapp2 bash => 터미널로 접속이 되지 않음.
+
+   - Dockerfile 명령어
+     FROM : 생성하려는 이미지의 베이스 이미지를 지정.
+            태그를 지정하지 않으면, lastest 로 지정됨.
+     LABEL : 이미지 작성 목적(버전, 타이틀, 설명, 라이센스 등)을 작성.
+     RUN : 설정된 베이스 이지지에 업데이트, 설치, 명령 실행등을 작성.
+           RUN apt update
+           RUN apt -y install nginx : 예로 베이스 이미지가 ubuntu.
+     CMD : 생성된 이미지를 컨테이너로 실행할 때 실행되는 명령.
+     ENTRYPOINT : 설정된 명령어는 Docker 컨테이너가 시잘될 때 마다 실행이됨.
+
+     CMD 와 ENTRYPOINT 의 차이점
+        Docker 컨테이너를 실행할 때 인자를 전달할 수 있음.
+        전달되는 정보가 CMD 에서는 지덩된 명령어는 무시되고,
+        전달된 새로운 인자를 이용한 새로운 명령어가 실행됨.
+
+        따라서, 반드시 실행할 명령어는 ENTRYPOINT 로 지정을 하고,
+        변경가능성이 있는 명령어는 CMD 로 사용.
+
+     COPY : 호스트 환경의 파일, 디렉토리를 이미지 안에 복사.
+           예로 개발된 자바 소스를 이미지에 복사하는 경우.
+              => 이런 경우라면 베이스 이미지가 openjdk 이미지를 사용.
+           build.gradle 파일등을 이미지에 복사하는 경우.
+              => RUN ./gradlew bootJar
+     EXPOSE : 컨테이너 호스스 네트워크를 통해서 들어오는 트래픽을
+             리스닝하는 포트와 프로토콜을 지정.
+            EXPOSE 80, EXPOSE 80/tcp, EXPOSE 80/update
+     
+
+13. Dockerfile 작성 및 build - 2
+   - ubuntu 를 베이스 이미지로
+   - LABEL 작성( 작성자, 설명 )
+   - package 설치( apache2, php5, git, curl, ssh, wget )
+   - apache 환경변수 설정
+   - RUN을 이용해서 기본 웹페이지 작성.
+   - 80 번 노출
+   - 이미지가 실행이 될 때 foreground 로 실행
+
+   - 생성된 이미지로 컨테이너 실행
+
+   - 컨테이너 터미널에 접속
+     curl localhost://8007 => "Hello, Docker application."
+
+14. Dockerfile 작성 및 build - 3
+   - docker 환경에서 item-service spring boot application 을 사용
+   - 구성요소
+     H2 DB
+     spring boot application
+
+     Docker 환경내에서 서비스가 되도록 해야 함.
+
+     하나의 네트워크에서 동작이 되도록 해야 함. => Docker network 기반의 컨테이너 서비스
+
+     - H2 DB 실행시 반드시 Docker network 에 참여시켜서 실행
+     - item-sevice 도 반드시 Docker network 에 참여시켜서 실행
+
+     결론적으로 모두가 하나의 네트워크에서 구성이됨.
+
+     a. docker network 생성
+        docker network create msa-network2
+
+     b. h2 db 를 msa-network 에서 실행 
+        docker run --network msa-network2 -d -p 1521:1521 -p 8081:81 -e 
+        H2_OPTIONS="-ifNotExists" --name=h2-2 oscarfonts/h2
+
+        b-1. 컨테이너 실행 후 반드시 Host os 상의 브라우저에서 접속 및 로그인 확인
+        b-2. 다시 msa-network2 의 h2-2 의 네트워크 구성정보를 확인
+            h2-2 의 IP 정보를 확인 후 Host os 상의 브라우저에서 접속 및 로그인 확인
+
+     c. 네트워크에 속한 end point 들을 확인
+        docker network inspect msa-network2
+
+        h2 의 IP 정보를 확인
+
+     d. c에서 확인한 ip 정보를 item-sevice 의 db 접속 정보에 반영.
+
+     e. spring boot 를 docker image 로 build
+
+     f. item-sevice 빌드 후 컨테이너로 실해시 msa-network2 네트워크에 참여시켜서 실행.
+
+docker run --network msa-network2 -d -p 8080:8080 --name item-service-container-1.0 item-service-image:1.0
+
+docker logs -f item-service-container-1.0
+
+     g. 네트워크에 속한 end point 들을 확인
+        docker network inspect msa-network2
+
+
+
+   - multi stage build
+     a. docker image 내부에서 빌드해서 
+        실행가능한 jar 파일로 패키징
+     b. docker container 가 실행이 될 때, 
+        jar 파일을 실행 
+   - multi stage build 사용 이유
+     a. 빌드 도구와 런타임 환경을 분리
+     b. 최소한의 구성만 포함하여 이미지 크기를 최소화
+     c. 빌드 도구와 관련된 정보들을 외부에 노출시키지 않음
+     d. 중복된 작업을 피하고 이전 단계의 캐시를 활용하기 때문에
+        빌드 속도가 향상됨
+
+
+15. Spring Cloud 기반의 MSA
+   15.1 Server 및 Services => 내 컴퓨터에서만 사용하는 MSA
+   - Spring Cloud
+     MSA - Config Server, Eureka Server, Gateway Server
+           Services( item-service ...... )
+           Kafka
+   - Config Server
+     설정 정보를 통합 관리하는 서버
+   - Eureka Server
+     서비스를 관리하는 서버
+   - Gateway Server
+     요청을 받아서 서비스를 연결해주는 서버
+   - Micro Service
+   - Kafka
+     서비스간 통신용
+
+   15.2 Cloud 상에서 서비스를 위한 환경 
+      15.1 에서 만든 서버 및 서비스를 Docker Container 화
+      15.2 컨테이너 상에서 마이크로 서비스가 원할한지 여부 확인
+
+   빌드 및 배포를 개발자가 일일이 수작업을 해야 하는 상황.
+
+   15.3 CI/CD
+      Micro Service 개발을 위한 개발 환경을 설정
+
+   15.4 Cloud 에 배포
+      ECS, EKS 선택. => 선택도 힘들고, 시간도 없고, 서비스는 해야 되고....
+      그렇다면 대안은 EC2 상에서 컨테이너로 실행하는 방법.
+
+16. Spring Cloud Config
+   16.1 사용 목적
+        - 분산 시스템에서 서버 클라이언트 구성에 필요한 설정 정보(application.yaml)를
+          spring boot 프로젝트에서 관리하는 것이 아니라, 외부 시스테에서 관리
+        - 하나의 중앙화된 저장소에서 구성 요소를 관리가 가능해짐으로
+          환경 셜정에 대해서 만큼은 일괄적으로 관리가 가능.
+          각각의 분리된 환경에서 사용할 수 있도록 지원이 가능.
+        - 설정 정보가 변경이 되더라고 각 서비스를 다시 빌드하지 않고,
+          변경된 설정 정보를 반영해서 바로 적용이 가능
+
+   16.2 실 사용 용도
+        마이크로 서비스를 사용하기 위해 item 마이크로 서비스에 있는 설정들을
+        Config Server 에서 관리해서 서비스가 되도록 수정할 예정.
+
+17. eureka-server
+    - 마이크로 서비스를 등록
+
+    - 실습 내용
+      a. eurka-server 구현
+      b. config-server 서버와 통신해서
+         eureka-server 의 설정 파일 정보 참조
+      c. eureka-server 기동해서
+         대시보드 화면 확인
+
+         http://localhost:8761/
+
+         현재는 eureka-server 에 등록된 마이크로 서비스 또는
+         서버 가 없으므로 
+         "Instances currently registered with Eureka" 항목에
+         "No instances available" 로 표시가 됨. => 정상임.
+
+18. eureka-server 에 마이크로 서비스 등록
+    - config-server 의 item-service 의 config 정보를 추가 설정
+    - item-service 프로젝트에 eureka client 의존관계 설정 추가
+    - config-server > eureka-server > item-service 순으로 실행
+    - eureka-server 의 대시보드에 item-service 조회가 되어야 함
+
+      http://localhost:8761/ 접속 해서 
+      "Instances currently registered with Eureka" 항목
+      item-service 마이크로 서비스가 조회.
+      => eureka-server 의 레지스트리에 item-service 가 등록되 된 상태.
+
+19. gateway-server 
+    - client 의 마이크로 서비스 요청에 대한 라우팅 설정
+    - erreka-server 의 대시보드 페이지에 접속
+      item-service, gateway-server 등록이 되어있는지 확인
+    - postman 을 사용해서 데이터 등록
+      http://localhost:8070/v1/item/add/C
+      http://localhost:8070/v1/item/add/F
+
+      local H2 db 에 접속해서 데이터가 등록되었는지 확인
+
+20. Docker container 로 실행
+    - 각 서버의 Dockerfile 작성 후 Docker build
+    - 생성된 Docker image로 컨테이너로 실행
+
+    - 서비스 환경에 따라서 설정파일을 구분해서 실행이 되도록 수정.
+      item-service-docker.yaml =>  Docker 환경에서 사용되는 설정파일 
+      item-service-local.yaml => 내 컴퓨터에서 사용되는 설정파일.
+
+      Docker image 생성을 위한 Dockerfile 을 수정해서 
+      필요한 환경에 따라 해당하는 config 파일을 선택해서 이미지로 빌드해서
+      사용될 수 있도록 적용.
+
+      Docker file에서 아래와 같이 적용하면 환경에 따른 설정 파일을 선택해서
+      빌드 할 수 있음.
+
+      rm src/main/resources/bootstrap.yaml
+      mv src/main/resources/bootstrap-docker.yaml src/main/resources/bootstrap.yaml
+
+      bootstrap-docker.yaml
+        profiles:
+          active: docker
+
+      bootstrap.yaml
+        profiles:
+          active: local
