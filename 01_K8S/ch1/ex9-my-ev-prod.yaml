@@ -1,0 +1,52 @@
+# 스토리지 볼륨
+# K8S에서 컨테이너 파일을 보존하기 위해 사용되는 객체
+# - 노드 내부의 일부 디스크 공간을 pod 와 공유하는 방식으로 제공
+# - 노드 외부의 스토리지 시스템과 연결하는 방식
+
+# K8S 의 볼륨의 종류
+# - emptyDir : pod 내부에서 임시적으로 사용하는 볼륨(저장소)
+# - hostPath : 노드 내부에 데이터를 저장할 수 있는 볼륨(저장소)
+# - PersistenceVolume : 외부 서버(노드 외부)에 데이터를 저장하는 볼륨(저장소)
+
+# emptyDir
+# - pod 내부에서 임시적으로 사용하는 볼륨(저장소)
+# - pod 가 노드에 할당될 때 처음으로 생성
+# - pod 가 노드에서 실행하는 동안만 존재( pod 가 삭제되면 볼륨도 삭제됨 )
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-ev-pod
+spec:
+  volumes: # pod 내부에 생성할 볼륨
+    - name: upload-volume
+      emptyDir: {} # emptyDir : 볼륨타입 설정. {} : 추가 옵션을 사용하지 않음을 의미.
+  containers:
+    - name: nginx
+      image: nginx
+      volumeMounts:
+        - name: upload-volume # 컨테이너가 사용하게 될 볼륨명. volumes.name 과 동일해야 함.
+          mountPath: /tmp/uploads # 볼륨이 마운트할 경로. 데이터가 실제로 저장되는 위치.
+
+# kubectl apply -f ex9-my-ev-prod.yaml
+
+#
+# kubectl get pod
+
+# volume type 확인
+# kubectl describe pod my-ev-pod
+
+# volume 에 데이터 저장
+# kubectl exec my-ev-pod -- bash -c "echo hello > /tmp/uploads/hello.txt"
+
+# volume 에 저장한 데이터 조회 => hello 출력되는 것을 확인
+# kubectl exec my-ev-pod -- cat /tmp/uploads/hello.txt
+
+# 임시 저장소임을 확인
+# kubectl delete pod my-ev-pod
+
+# 다시 my-ev-pod 를 생성 => 임시 저장소 생성
+# kubectl apply -f ex9-my-ev-prod.yaml
+
+# 기존 데이터가 유지가 되는지 확인 => 임시 저장소인지 확인.
+# kubectl exec my-ev-pod -- ls /tmp/uploads
