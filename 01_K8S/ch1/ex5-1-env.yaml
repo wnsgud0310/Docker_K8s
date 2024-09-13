@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: env-test-pod
+spec:
+  containers:
+    - name: my-container
+      image: nginx
+      # 컨테이너 전용 환경변수 설정
+      env:
+        # 환경변수 1. 설정
+        - name: SAMPLE_ENV # 환경 변수명
+          value: "Sample Variable"
+          # 환경변수 2 설정
+          # POD_NAME 환경 변수는 pod 의 이름(env-test-pod)을 컨테이너 내부에 설정
+        - name: POD_NAME
+          # 참조해서 사용할 수 있도록, value 대신에 valueFrom 으로 정의함.
+          valueFrom:
+            fieldRef:
+              # meta.name 처럼 참조를 위한 field 를 지정하는 것을
+              # K8S 에서는 , downward api 라고 함.
+              fieldPath: metadata.name
+# kubectl apply -f ex5-1-env.yaml
+
+# kubectl get pod
+
+# kubectl exec env-test-pod -- printenv
+# kubectl exec : pod 내부에 있는 컨테이너에 임의의 명령어를
+# 실행하는 형태로 사용할 수 있음.
+# printenv : 컨테이너 내부에 설정된 환경변수 목록을 출력하는 명령어

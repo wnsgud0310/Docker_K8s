@@ -1,0 +1,21 @@
+# configMap 실습 예제
+
+# configMap 은 환경변수의 재사용 및 통합관리 용도
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-config
+# 관리할 환경 변수를 설정. key, value 형태로 설정
+data:
+  profile: "dev"
+  db_host: "10.20.30.40"
+  welcom-script: | # multi-line 작성을 위해 | 를 사용함.
+    echo Hello!
+    echo DB is $db_host
+
+# kubectl apply -f ex6-1-configmap.yaml
+
+# kubectl get configmap
+
+# kubectl describe configmap my-config
