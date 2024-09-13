@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: my-pvc-10
+spec:
+  accessModes:
+    - ReadWriteMany #여러 개의 Pod가 동시에 읽고 쓸 수 있음
+  storageClassName: host-pv
+  resources:
+    requests:
+      storage: 10Mi
+#kubectl apply -f ex11-my-pvc.yaml
+
+# kubectl get pv
+# 현재 생성된 pv 는 2개 중에서 하나에 status 가 bound 가 되면
+# pvc 요청이 수립된 상태가 됨. claim 항목에 my-pvc-10 가 조회가 됨
+# access mode의 항목에 RWX 로 설정된 것을 확인.
+# reclaim policy 의 항목이 delete 로 설정된 것을 확인.

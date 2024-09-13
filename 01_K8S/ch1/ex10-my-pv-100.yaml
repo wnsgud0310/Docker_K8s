@@ -1,0 +1,21 @@
+# PV(Persistence Volume) : 저장소 생성
+# PVC(Persistence Volume Claim) : 생성된 저장소 사용을 요청
+#     - 스토리지를 동적으로 바인딩하기 위한 요청 객체
+# - K8S 클러스터 관리자가 PV 를 생성 및 관리하고, 사용자(개발자) PVC를 통해서
+
+#     PV 를 요청
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: my-pv-100
+spec:
+  storageClassName: host-pv #PVC에서 스토리지 사용 요청시 사용하는 정보
+  persistentVolumeReclaimPolicy: Delete # PVC 삭제 -> PV 데이터도 삭제
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteMany # multi PV 가 접속해서 사용
+  hostPath:
+    path: "/my-pv/data/pv1"
+# kubectl apply -f ex10-my-pv-100.yaml
