@@ -1,0 +1,17 @@
+1. 실습 환경 설정 - Ingress 설정
+   1.1 kind.sigs.k8s.io 에 접속
+   1.2 User Guide > Ingress 페이지로 이동
+   1.3 기존 클러스터 삭제
+       지금 까지 실습한 객체들이 모두 삭제가 됨.
+   1.4 Ingress 설치 및 설정
+       자세한 실행 관련 명령어는 아래의 파일의 하단부의 내용을 참조
+       kind-cluster-config-for-ingress.yaml
+
+2. K8S 에서의 통신
+   - pod 내에서 컨테이너 간 통신
+   - 서로 다른 pod 에 있는 컨테이너 간 통신
+   - Service 를 이용한 애플리케이션(spring boot) 간 통신
+     서비스( ClusterIP, ExternalName ) 객체
+     서비스명으로 통신이 가능해짐.
+
+     => Ingress 설치

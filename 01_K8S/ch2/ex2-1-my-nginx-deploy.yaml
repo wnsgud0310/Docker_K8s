@@ -1,0 +1,48 @@
+# 실습 내용
+# 서로 다른 Pod 에 있는 컨테이너간 호출
+# => 서로 다른 Pod라는 의미는 K8S 클러스터 내부에 서로 다른 IP로 할당된 상태임.
+
+# 1. (( nginx-container1(Pod1) -> nginx-container2(Pod2) ) => 레플리카 셋) => Deployment
+# => yaml file 로 작성
+# 2. Service( ClusterIP )
+# => yaml file 로 작성
+
+# 결국 이 실습의 목적은 K8S 클러스터 로 프로덕션(웹 서비스) 환경을 구축하는 것임.
+# 이와 관련된 상세한 설명은 본 파일의 하단 부의 설명을 참조.
+
+# 그래서, 본 실습은 위의 1 번에 해당하는 yaml 작성하는 것임.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-nginx-deploy
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-nginx
+  template:
+    metadata:
+      labels:
+        app: my-nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx
+# kubectl apply -f ex2-1-my-nginx-deploy.yaml
+# kubectl get pods
+
+# K8S 와 spring boot 로 웹 서비스를 하는 경우의 통신 흐름
+# client 의 Request -> Ingress -> ClusterIp -> Pod(java.jar)
+#
+# 1. Service( ClusterIP )
+# K8S 클러스터 내부에서만 접근 가능한 IP를 할당하며,
+# 외부에서는 접근할 수 없음.
+#
+# 2. Ingress
+# K8S 클러스터 외부에서 내부에 존재하는 K8S 서비스에 접근하기 위해
+# HTTP/HTTPS 를 활용한 라우팅 규칙을 제공하는 객체임.
+#
+# Ingress 를 사용하게 되면 K8S 클러스터 내부에 존재하는 다수의
+# 서비스들을 외부에 노출시킬 수 있어 프로덕션 환경에서 유용하게
+# 사용할 수 있음.

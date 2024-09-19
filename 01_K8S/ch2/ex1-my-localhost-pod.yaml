@@ -1,0 +1,39 @@
+# 실습 내용
+# 동일한 pod 내에서 컨테이너 간 통신 실습
+#   => multi container 를 정의하게 됨. curl container, nginx container
+
+# 컨테이너간 통신 : curl container -> nginx container
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-localhost-pod
+spec:
+  containers:
+    # 호출을 받는 컨테이너를 nginx 로 정의
+    - name: nginx-container
+      image: nginx
+    # nginx 컨테이너를 호출하는 컨테이너를 정의
+    - name: curl-container
+      image: curlimages/curl
+      # curl 은 nginx 처럼 프로세스로 계속 실행이 되는 것이 아님.
+      # 시작하자마자 종료될 수 있으므로, 바로 종료되는 것을 방지하기 위해서
+      # sleep 을 설정해서 명령어를 받을 수 있도록 해야 함.
+      command: ["sh", "-c", "sleep 180"] # 180초로 설정
+
+# pod 생성
+# kubectl apply -f ex1-my-localhost-pod.yaml
+
+# 네트워크 구성 확인
+# kubectl describe pod my-localhost-pod
+
+# 컨테이너간 통신
+# 통신을 위한 화면이 없기때문에 CLI 로 통신( curl -> nginx )
+# curl -> nginx 호출이 되도록, curl container 의 shell 에 접속
+# kubectl exec my-localhost-pod -c curl-container -- curl localhost:80
+# -c : 어떤 컨테이너에 대해 명령어를 수행할 것인지 컨테이너를 지정하기 위한 옵션
+# curl-container : 명령을 수행한 컨테이너 명
+# -- : -- 이후에 실행할 명령어가 위치
+
+# nginx-container 와 curl-container 는 동일한 IP 상에 있으므로,
+# localhost 의 80 port 를 사용해서 nginx-container 에 접근

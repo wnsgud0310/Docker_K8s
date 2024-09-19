@@ -1,5 +1,7 @@
+# 컨테이너에 환경변수 직접 설정하는 예제
+
 apiVersion: v1
-kind: Pod
+kind: Pod # 리소스의 종류가 pod라는 뜻
 metadata:
   name: env-test-pod
 spec:

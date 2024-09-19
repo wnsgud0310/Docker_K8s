@@ -1,0 +1,70 @@
+# 지금까지 K8S 에서 했던 내용은 파일 하단에 정리된것을 참조
+
+# 실습 내용
+# 1. pod 를 생성해서 pvc 사용
+# 2. pvc 사용하던 pod 를 삭제해서 pv(영구볼륨)에 저장된 데이터가
+#    그대로 남아 있는지 확인.
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pv-pod
+spec:
+  volumes:
+    - name: my-pvc
+      # pvc 를 volume 로 사용하겠다는 의미.
+      persistentVolumeClaim:
+        # bounding 상태인 pvc 를 지정.
+        claimName: my-pvc-10 # ex11-my-pvc.yaml 정의됨.
+  # my-pvc 라는 이름의 volume 을 사용할 container 정의
+  containers:
+    - name: nginx
+      image: nginx
+      volumeMounts:
+        # container 에서 mount 해서 사용할 volume 을 지정.
+        - name: my-pvc
+          # 컨테이너에서 사용할 working directory 경로를 지정
+          mountPath: "/data/pv"
+# apply
+# kubectl apply -f ex12-my-pv-pod.yaml
+
+# nginx container 를 통해서 working directory 에서 파일 생성
+# nginx linux shell 접근
+# kubectl exec my-pv-pod -- bash -c "echo hello! > /data/pv/hello.txt"
+
+# persistent volume에 생성된 파일 확인
+# kubectl exec my-pv-pod -- cat /data/pv/hello.txt
+
+# pvc 를 사용하던 pod 를 삭제
+# kubectl delete pod my-pv-pod
+
+# pod 가 삭제된 후에 생성했었던 파일 확인
+# pod 가 삭제가 되었으므로, 확인 불가
+# kubectl exec my-pv-pod -- cat /data/pv/hello.txt
+
+# pod 를 다시 생성( yaml apply )
+# kubectl apply -f ex12-my-pv-pod.yaml
+
+# pod 가 삭제된 후에 생성했었던 파일 확인
+# kubectl exec my-pv-pod -- cat /data/pv/hello.txt
+
+# 지금까지 K8S 에서 했던 내용 정리
+# 1. yaml 에 정의된 pod spec 으로 K8S 적용. ( 선언형, apply )
+# 2. pod에 restartpolicy 정의
+#    - 재시작에 대한 정상, 비정상 테스트
+#    - Pod 의 상태 확인, Container 의 상태 확인.
+# 3. 하나의 pod 에 multi container spec 을 정의
+# 4. ReplicaSet spec 정의
+#    - 지정된 pod 수를 계속 유지
+#    - 각 pod 의 container 의 이미지 버전 업데이트
+#      업데이트 전략 : Recreate, RollingUpdate
+# 5. container 환경변수
+#    - 컨테이너 내부에 직접 설정, configMap, secret( 명령형, 선언형 )
+# 6. 스토리지 볼륨
+#    - emptyDir, hostPaht( 권장안함 ), PersistenceVolume
+# 7. PersistenceVolume
+#    - PV( PersistenceVolume )
+#      저장소 생성
+#    - PVC( PersistenceVolume Claim )
+#      생성된 저장소 사용을 요청하는 객체.
+#      스토리지를 동적으로 바인딩하는 객체.
