@@ -1,0 +1,13 @@
+# factorial-cache-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: factorial-service
+  namespace: factorial
+spec:
+  selector:
+    app: factorial-app
+  ports:
+    - protocol: TCP
+      port: 8080
+      

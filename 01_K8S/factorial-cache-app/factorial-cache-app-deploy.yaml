@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-factorial-cache-app
+  namespace: factorial
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: factorial-cache-app
+  template:
+    metadata:
+      labels:
+        app: factorial-cache-app
+    spec:
+      terminationGracePeriodSeconds: 60
+      containers:
+        - name: factorial-cache-app
+          image: wnsgud0310/factorial-cache-app:0.0.3
+          env: # 환경변수 설정
+            - name: APP_LANGUAGE    # factorial-config.yaml
+              valueFrom:
+                configMapKeyRef:
+                  key: language
+                  name: factorial-config
+            - name: API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: factorial-secret
+                  key: api-key
+          lifecycle:
+            preStop: # 컨테이너가 종료( 계회적인 의도에 따른 종료, 예. rollingupdate 등) 될 대 실행되는 hook
+              exec:
+                command: [ "/bin/sh -c sleep 10" ]  # 10초 정도 sleep 한 후에 애플리케이션에 종료 신호를 보내도록함.
+            ## lifecycle hook - end
+            ## probe 추가 - start
+          startupProbe:
+            httpGet:
+              path: /probe/healthcheck
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 1
+            failureThreshold: 10
+          readinessProbe:
+            httpGet:
+              port: 8080
+              path: /probe/healthcheck
+            initialDelaySeconds: 15
+            periodSeconds: 1
+            successThreshold: 2
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              port: 8080
+              path: /probe/healthcheck
+            initialDelaySeconds: 15
+            periodSeconds: 1
+            failureThreshold: 3
+          ## probe 추가 - end
