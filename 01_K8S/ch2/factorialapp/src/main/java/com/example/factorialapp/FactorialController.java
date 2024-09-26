@@ -1,4 +1,4 @@
-package com.example.factorialapp.healthcheck;
+package com.example.factorialapp;
 
 
 import org.springframework.web.bind.annotation.GetMapping;
